@@ -5,6 +5,9 @@ import (
 	"github.com/frankrap/bitmex-api"
 	"github.com/frankrap/bitmex-api/swagger"
 	"log"
+	"os"
+	"os/signal"
+	"syscall"
 )
 
 func main() {
@@ -45,6 +48,9 @@ func main() {
 	b.GetPosition("XBTUSD")
 	b.GetMargin()
 
-	forever := make(chan bool)
-	<-forever
+	exitSignal := make(chan os.Signal, 1)
+	sigs := []os.Signal{os.Interrupt, syscall.SIGILL, syscall.SIGINT, syscall.SIGKILL, syscall.SIGQUIT, syscall.SIGTERM}
+	signal.Notify(exitSignal, sigs...)
+
+	<-exitSignal
 }
