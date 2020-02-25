@@ -101,6 +101,16 @@ func TestBitMEX_GetPositions(t *testing.T) {
 	t.Log(positions)
 }
 
+func TestBitMEX_GetOpenPositions(t *testing.T) {
+	bitmex := newBitmexForTest()
+	positions, err := bitmex.GetOpenPositions("XBTUSD")
+	if err != nil {
+		t.Error(err)
+		return
+	}
+	t.Log(positions)
+}
+
 func TestBitMEX_PositionUpdateLeverage(t *testing.T) {
 	bitmex := newBitmexForTest()
 	leverage := 2.0

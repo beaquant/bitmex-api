@@ -206,6 +206,24 @@ func (b *BitMEX) GetPositions(symbol string) (positions []swagger.Position, err 
 	return
 }
 
+func (b *BitMEX) GetOpenPositions(symbol string) (positions []swagger.Position, err error) {
+	var response *http.Response
+
+	params := map[string]interface{}{}
+	if symbol != "" {
+		params["filter"] = fmt.Sprintf(`{"isOpen": true, "symbol":"%s"}`, symbol)
+	} else {
+		params["filter"] = `{"isOpen": true}`
+	}
+
+	positions, response, err = b.client.PositionApi.PositionGet(b.ctx, params)
+	if err != nil {
+		return
+	}
+	b.onResponse(response)
+	return
+}
+
 func (b *BitMEX) GetPositionsRaw(filter string, columns string, count int32) (positions []swagger.Position, err error) {
 	var response *http.Response
 
